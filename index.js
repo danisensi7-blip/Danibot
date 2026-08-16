@@ -40,9 +40,9 @@ async function iniciarDanibot() {
 });
    
 
-   if (connection === "close") {
-    console.log("❌ Conexión cerrada.");
-   }
+   
+    
+   
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const mensaje = messages[0];
 
