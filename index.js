@@ -10,27 +10,32 @@ async function iniciarDanibot() {
 
   const sock = makeWASocket({
     auth: state, 
-   printQRInTerminal: true,
+   
   });
 
   sock.ev.on("creds.update", saveCreds);
 
-  sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
+ sock.ev.on("connection.update", ({ connection, lastDisconnect, qr }) => {
+
+    if (qr) {
+        console.log("📱 ESCANEA ESTE QR CON WHATSAPP:");
+        console.log(qr);
+    }
+
     if (connection === "open") {
-      console.log("✅ Danibot conectado a WhatsApp");
+        console.log("✅ Danibot conectado a WhatsApp");
     }
 
     if (connection === "close") {
-      const volverAConectar =
-        lastDisconnect?.error?.output?.statusCode !==
-        DisconnectReason.loggedOut;
+        const volverAConectar =
+            lastDisconnect?.error?.output?.statusCode !==
+            DisconnectReason.loggedOut;
 
-      if (volverAConectar) {
-        iniciarDanibot();
-      }
+        if (volverAConectar) {
+            iniciarDanibot();
+        }
     }
-  });
-
+});
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const mensaje = messages[0];
 
