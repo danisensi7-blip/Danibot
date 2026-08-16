@@ -21,7 +21,7 @@ async function iniciarDanibot() {
   try {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const phoneNumber = "573132795505";
+    const phoneNumber = "+573132795505";
     const code = await sock.requestPairingCode(phoneNumber);
 
     console.log("📱 CÓDIGO DE VINCULACIÓN:", code);
