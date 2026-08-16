@@ -9,8 +9,8 @@ async function iniciarDanibot() {
     await useMultiFileAuthState("auth_info_baileys");
 
   const sock = makeWASocket({
-    auth: state,
-   
+    auth: state, 
+   printQRInTerminal: true,
   });
 
   sock.ev.on("creds.update", saveCreds);
