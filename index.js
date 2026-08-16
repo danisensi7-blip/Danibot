@@ -18,16 +18,14 @@ async function iniciarDanibot() {
  sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
 
     if (connection === "connecting" && !state.creds.registered) {
-  try {
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    try {
+        const phoneNumber = "573132795505";
+        const code = await sock.requestPairingCode(phoneNumber);
 
-    const phoneNumber = "573132795505";
-    const code = await sock.requestPairingCode(phoneNumber);
-
-    console.log("📱 CÓDIGO DE VINCULACIÓN:", code);
-  } catch (error) {
-    console.error("❌ Error obteniendo código de vinculación:", error);
-  }
+        console.log("📱 CÓDIGO DE VINCULACIÓN:", code);
+    } catch (error) {
+        console.error("❌ Error obteniendo código de vinculación:", error);
+    }
     }
        
    
