@@ -17,18 +17,27 @@ async function iniciarDanibot() {
 
  sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
 
-    if (connection === "connecting" && !state.creds.registered) {
-    try {
-        const phoneNumber = "573132795505";
-        const code = await sock.requestPairingCode(phoneNumber);
+  if (qr) {
+    console.log("📱 ESCANEA ESTE CÓDIGO QR CON WHATSAPP:");
+    qrcode.generate(qr, { small: true });
+  }
 
-        console.log("📱 CÓDIGO DE VINCULACIÓN:", code);
-    } catch (error) {
-        console.error("❌ Error obteniendo código de vinculación:", error);
+  if (connection === "open") {
+    console.log("✅ DANIBOT CONECTADO A WHATSAPP");
+  }
+
+  if (connection === "close") {
+    console.log("❌ Conexión cerrada.");
+
+    const shouldReconnect =
+      lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
+
+    if (shouldReconnect) {
+      console.log("🔄 Reconectando...");
+      iniciarDanibot();
     }
-    }
-       
-   
+  }
+});
    
 
    if (connection === "close") {
