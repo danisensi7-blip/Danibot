@@ -19,7 +19,7 @@ async function iniciarDanibot() {
 
     if (connection === "connecting" && !state.creds.registered) {
   try {
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 10000));
 
     const phoneNumber = "573132795505";
     const code = await sock.requestPairingCode(phoneNumber);
