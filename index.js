@@ -28,7 +28,7 @@ async function iniciarDanibot() {
   } catch (error) {
     console.error("❌ Error obteniendo código de vinculación:", error);
   }
-    });
+    }
        
    
    
