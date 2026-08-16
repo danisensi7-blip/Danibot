@@ -36,7 +36,7 @@ async function iniciarDanibot() {
       console.log("🔄 Reconectando...");
       iniciarDanibot();
     }
-  }
+  
 });
    
 
