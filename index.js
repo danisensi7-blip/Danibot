@@ -26,7 +26,7 @@ async function iniciarDanibot() {
     console.log("✅ DANIBOT CONECTADO A WHATSAPP");
   }
 
-  if (connection === "close") {
+  
     console.log("❌ Conexión cerrada.");
 
     const shouldReconnect =
