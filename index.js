@@ -60,7 +60,7 @@ async function iniciarDanibot() {
 ┃ • .hola
 ┃
  `
-});╰━━━━━━━━━━━━━━━━━━╯
+      }); 
     }
 
     if (texto.toLowerCase() === ".ping") {
