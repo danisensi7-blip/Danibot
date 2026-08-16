@@ -3,15 +3,15 @@ const {
   useMultiFileAuthState,
   DisconnectReason
 } = require("@whiskeysockets/baileys");
-
+const qrcode = require("qrcode-terminal");
 async function iniciarDanibot() {
   const { state, saveCreds } =
     await useMultiFileAuthState("auth_info_baileys");
 
   const sock = makeWASocket({
     auth: state, 
-   
   });
+
 
   sock.ev.on("creds.update", saveCreds);
 
@@ -19,7 +19,7 @@ async function iniciarDanibot() {
 
     if (qr) {
         console.log("📱 ESCANEA ESTE QR CON WHATSAPP:");
-        console.log(qr);
+        qrcode.generate(qr, { small: true });
     }
 
     if (connection === "open") {
