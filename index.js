@@ -59,8 +59,8 @@ async function iniciarDanibot() {
 ┃ • .ping
 ┃ • .hola
 ┃
-╰━━━━━━━━━━━━━━━━━━╯`
-      });
+ `
+});╰━━━━━━━━━━━━━━━━━━╯
     }
 
     if (texto.toLowerCase() === ".ping") {
