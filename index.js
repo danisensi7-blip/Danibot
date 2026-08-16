@@ -33,20 +33,9 @@ async function iniciarDanibot() {
    
    
 
-    if (connection === "open") {
-        console.log("✅ Danibot conectado a WhatsApp");
-    }
-
-    if (connection === "close") {
-        const volverAConectar =
-            lastDisconnect?.error?.output?.statusCode !==
-            DisconnectReason.loggedOut;
-
-        if (volverAConectar) {
-            iniciarDanibot();
-        }
-    }
-});
+   if (connection === "close") {
+    console.log("❌ Conexión cerrada.");
+   }
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const mensaje = messages[0];
 
