@@ -77,4 +77,4 @@ async function iniciarDanibot() {
   });
 
 
-iniciarDanibot();
+ }iniciarDanibot();
