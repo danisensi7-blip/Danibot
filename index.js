@@ -1,48 +1,58 @@
-const makeWASocket = require("@whiskeysockets/baileys").default;
 const {
+  default: makeWASocket,
   useMultiFileAuthState,
   DisconnectReason
 } = require("@whiskeysockets/baileys");
-const qrcode = require("qrcode-terminal");
+
+const readline = require("readline");
+
 async function iniciarDanibot() {
   const { state, saveCreds } =
     await useMultiFileAuthState("auth_info_baileys");
 
   const sock = makeWASocket({
-    auth: state, 
+    auth: state,
+    printQRInTerminal: false
   });
-
 
   sock.ev.on("creds.update", saveCreds);
 
- sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
+  // CÓDIGO DE VINCULACIÓN
+  if (!sock.authState?.creds?.registered) {
+    const numero = "TU_NUMERO_SIN_EL_+";
 
-  if (qr) {
-    console.log("📱 ESCANEA ESTE CÓDIGO QR EN WHATSAPP:");
-    qrcode.generate(qr, { small: true });
+    setTimeout(async () => {
+      try {
+        const codigo = await sock.requestPairingCode(numero);
+        console.log("================================");
+        console.log("🔗 CÓDIGO PARA VINCULAR WHATSAPP:");
+        console.log(codigo);
+        console.log("================================");
+      } catch (error) {
+        console.log("❌ Error generando código:", error);
+      }
+    }, 3000);
   }
 
-  if (connection === "open") {
-    console.log("✅ DANIBOT CONECTADO A WHATSAPP");
-  }
-
-  if (connection === "close") {
-    console.log("❌ Conexión cerrada.");
-
-    const shouldReconnect =
-      lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-
-    if (shouldReconnect) {
-      console.log("🔄 Reconectando...");
-      iniciarDanibot();
+  sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
+    if (connection === "open") {
+      console.log("✅ DANIBOT CONECTADO A WHATSAPP");
     }
-  }
-});
-   
 
-   
-    
-   
+    if (connection === "close") {
+      const shouldReconnect =
+        lastDisconnect?.error?.output?.statusCode !==
+        DisconnectReason.loggedOut;
+
+      console.log("❌ Conexión cerrada.");
+
+      if (shouldReconnect) {
+        console.log("🔄 Reconectando...");
+        iniciarDanibot();
+      }
+    }
+  });
+
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const mensaje = messages[0];
 
@@ -56,18 +66,18 @@ async function iniciarDanibot() {
     if (texto.toLowerCase() === ".menu") {
       await sock.sendMessage(mensaje.key.remoteJid, {
         text:
-`╭━━━〔 🤖 DANIBOT 〕━━━╮
-┃
-┃ 👋 Hola, soy Danibot
-┃
-┃ 📋 COMANDOS
-┃
-┃ • .menu
-┃ • .ping
-┃ • .hola
-┃
- `
-      }); 
+`╭━━〔 🤖 DANIBOT 〕━━╮
+
+👋 Hola, soy Danibot
+
+📋 COMANDOS
+
+• .menu
+• .ping
+• .hola
+
+╰━━━━━━━━━━━━━━╯`
+      });
     }
 
     if (texto.toLowerCase() === ".ping") {
@@ -82,6 +92,6 @@ async function iniciarDanibot() {
       });
     }
   });
- 
+}
 
- }iniciarDanibot();
+iniciarDanibot();
