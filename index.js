@@ -18,7 +18,7 @@ async function iniciarDanibot() {
  sock.ev.on("connection.update", async ({ connection, lastDisconnect, qr }) => {
 
   if (qr) {
-    console.log("📱 ESCANEA ESTE CÓDIGO QR CON WHATSAPP:");
+    console.log("📱 ESCANEA ESTE CÓDIGO QR EN WHATSAPP:");
     qrcode.generate(qr, { small: true });
   }
 
@@ -26,7 +26,7 @@ async function iniciarDanibot() {
     console.log("✅ DANIBOT CONECTADO A WHATSAPP");
   }
 
-  
+  if (connection === "close") {
     console.log("❌ Conexión cerrada.");
 
     const shouldReconnect =
@@ -36,7 +36,7 @@ async function iniciarDanibot() {
       console.log("🔄 Reconectando...");
       iniciarDanibot();
     }
-  
+  }
 });
    
 
